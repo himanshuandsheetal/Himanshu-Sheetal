@@ -6,15 +6,15 @@
 <title>Himanshu &amp; Sheetal — Wedding Invitation</title>
 <meta name="description" content="You are invited to the wedding of Himanshu and Sheetal on 12 Dec 2026 at K2 Garden and Resort, Indore. Reception on 13 Dec 2026 at Shree Hari Garden, Dewas.">
 <meta name="theme-color" content="#7A1631">
-<!-- Replace https://YOUR-SITE.netlify.app with the real address after hosting -->
-<link rel="canonical" href="https://YOUR-SITE.netlify.app/">
+<!-- Site address on GitHub Pages -->
+<link rel="canonical" href="https://himanshuandsheetal.github.io/Himanshu-Sheetal/">
 <!-- WhatsApp / Facebook preview (og-image.jpg must sit next to this file) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Himanshu &amp; Sheetal">
 <meta property="og:title" content="Himanshu &amp; Sheetal — Wedding Invitation">
 <meta property="og:description" content="Join us for our wedding on 12 Dec 2026 in Indore. Tap to open your invitation.">
-<meta property="og:url" content="https://YOUR-SITE.netlify.app/">
-<meta property="og:image" content="https://YOUR-SITE.netlify.app/og-image.jpg">
+<meta property="og:url" content="https://himanshuandsheetal.github.io/Himanshu-Sheetal/">
+<meta property="og:image" content="https://himanshuandsheetal.github.io/Himanshu-Sheetal/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Himanshu &amp; Sheetal — Wedding Invitation">
 <meta name="twitter:description" content="Join us for our wedding on 12 Dec 2026 in Indore. Tap to open your invitation.">
-<meta name="twitter:image" content="https://YOUR-SITE.netlify.app/og-image.jpg">
+<meta name="twitter:image" content="https://himanshuandsheetal.github.io/Himanshu-Sheetal/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%237A1631'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23E7CF94' stroke-width='2'/%3E%3Ctext x='32' y='41' font-family='Georgia,serif' font-size='24' fill='%23E7CF94' text-anchor='middle'%3EH%26amp;S%3C/text%3E%3C/svg%3E">
 <!-- Fonts load without blocking the first paint -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -573,14 +573,21 @@ body{background-attachment:scroll}
 @media (prefers-reduced-motion:reduce){.ph::before{display:none}}
 
 /* ================= REDUCED MOTION ================= */
+/* "Reduce motion" (often switched on by Android battery saver): keep the envelope and
+   function scenes, drop only ambient effects (petals, glitter, glow, parallax, spin, scroll-in). */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
-  .mh{stroke-dashoffset:0}.mdot{opacity:1}.nrev{transform:none}
-  .rv-hide{opacity:1;transform:none}
+  .mandala canvas,.arch::before,.env,.ph::before,.spark{animation:none!important}
+  .rv,.rv-hide{opacity:1!important;transform:none!important;transition:none!important}
   .ph img{opacity:1}
   #petals,#glow,#glitter{display:none}
 }
+/* Pause hero decorations while the hero is off screen (saves battery on phones) */
+.hero.off .strand,.hero.off .mandala canvas,.hero.off .arch::before{animation-play-state:paused}
+.mandala canvas{will-change:transform}
+/* Light mode for low-end phones */
+.lite .mandala canvas{animation:none}
+.lite #glitter{display:none}
 </style>
 </head>
 <body class="locked">
@@ -845,9 +852,12 @@ const PHOTOS=[1,2,3,4,5].map(n=>({src:`photo${n}.jpg`,pos:'50% 30%',alt:`Himansh
 
 (function(){
 'use strict';
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;   // ambient effects off
+const reduce=false;                                                    // story animations always play
+const lite=(navigator.deviceMemory&&navigator.deviceMemory<=3)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4);
+if(lite)document.documentElement.classList.add('lite');
 const NS='http://www.w3.org/2000/svg',$=id=>document.getElementById(id),rnd=(a,b)=>a+Math.random()*(b-a);
-const DPR=()=>Math.min(2,devicePixelRatio||1),isPhone=()=>innerWidth<600;
+const DPR=()=>Math.min(lite?1:1.5,devicePixelRatio||1),isPhone=()=>innerWidth<600;
 function svgEl(n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;}
 function restart(el,c){el.classList.remove(c);void el.getBoundingClientRect();el.classList.add(c);}
 const vText=v=>v.name+', '+v.address;
@@ -1189,13 +1199,13 @@ function updateFlight(){if(samples.length<3||!plane)return;const H=parseFloat(fw
 
 /* ================= SCROLL: PARALLAX + PLANE ================= */
 const par=$('parallax');let ticking=false;
-addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{ticking=false;if(!reduce)par.style.transform=`translate3d(0,${(scrollY*.35).toFixed(1)}px,0)`;updateFlight();});},{passive:true});
+addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{ticking=false;if(!calm&&!lite)par.style.transform=`translate3d(0,${(scrollY*.35).toFixed(1)}px,0)`;updateFlight();});},{passive:true});
 let rb;const rebuild=()=>{clearTimeout(rb);rb=setTimeout(()=>{drawToran();buildFlight();sizeCanvases();},180);};
 addEventListener('resize',rebuild);
 if('ResizeObserver' in window){let lastH=0;new ResizeObserver(()=>{const h=document.querySelector('main').offsetHeight;if(Math.abs(h-lastH)>4){lastH=h;rebuild();}}).observe(document.querySelector('main'));}
 
 /* ================= SCROLL REVEAL (content stays visible if this fails) ================= */
-if(!reduce&&'IntersectionObserver' in window){const rvs=[...document.querySelectorAll('.rv')];let batch=0,bt;
+if(!calm&&'IntersectionObserver' in window){const rvs=[...document.querySelectorAll('.rv')];let batch=0,bt;
   rvs.forEach(el=>{if(el.getBoundingClientRect().top>innerHeight*.92)el.classList.add('rv-hide');});
   const rio=new IntersectionObserver(en=>en.forEach(x=>{if(!x.isIntersecting)return;const el=x.target;el.style.transitionDelay=(batch++%4)*80+'ms';el.classList.remove('rv-hide');rio.unobserve(el);clearTimeout(bt);bt=setTimeout(()=>batch=0,120);}),{threshold:.1,rootMargin:'0px 0px -5% 0px'});
   rvs.forEach(el=>{if(el.classList.contains('rv-hide'))rio.observe(el);});}
@@ -1205,18 +1215,18 @@ const pc=$('petals'),px=pc.getContext('2d'),glc=$('glow'),gx=glc.getContext('2d'
 function sizeCanvases(){VW=innerWidth;VH=innerHeight;const r=DPR();[pc,glc].forEach(c=>{c.width=VW*r;c.height=VH*r;});px.setTransform(r,0,0,r,0,0);gx.setTransform(r,0,0,r,0,0);}
 sizeCanvases();
 const petals=[],PCOL=['#F5A100','#FFB627','#D6246E','#E8457E','#F7C21B'];
-function startPetals(){if(reduce)return;for(let i=0,n=isPhone()?10:18;i<n;i++)petals.push({x:rnd(0,VW),y:rnd(-VH,0),vy:rnd(.35,.8),ph:rnd(0,6.28),sw:rnd(.4,.9),rot:rnd(0,6.28),vr:rnd(-.02,.02),s:rnd(5,9),c:PCOL[i%5]});requestAnimationFrame(petalLoop);}
+function startPetals(){if(calm)return;for(let i=0,n=lite?6:(isPhone()?10:18);i<n;i++)petals.push({x:rnd(0,VW),y:rnd(-VH,0),vy:rnd(.35,.8),ph:rnd(0,6.28),sw:rnd(.4,.9),rot:rnd(0,6.28),vr:rnd(-.02,.02),s:rnd(5,9),c:PCOL[i%5]});requestAnimationFrame(petalLoop);}
 function petalLoop(){if(document.hidden){document.addEventListener('visibilitychange',()=>requestAnimationFrame(petalLoop),{once:true});return;}px.clearRect(0,0,VW,VH);
   for(const p of petals){p.ph+=.012;p.x+=Math.sin(p.ph)*p.sw;p.y+=p.vy;p.rot+=p.vr;if(p.y>VH+20){p.y=-20;p.x=rnd(0,VW);}
     px.save();px.globalAlpha=.8;px.translate(p.x,p.y);px.rotate(p.rot);px.fillStyle=p.c;px.beginPath();px.moveTo(0,-p.s);px.quadraticCurveTo(p.s*.9,0,0,p.s);px.quadraticCurveTo(-p.s*.9,0,0,-p.s);px.fill();px.restore();}
   requestAnimationFrame(petalLoop);}
 
 /* ================= GLITTER ================= */
-function startGlitter(){if(reduce)return;let h='';for(let i=0,n=isPhone()?18:30;i<n;i++)h+=`<svg aria-hidden="true" class="spark" style="left:${rnd(2,98).toFixed(1)}%;top:${rnd(2,98).toFixed(1)}%;--s:${rnd(6,11).toFixed(0)}px;--t:${rnd(3.5,7.5).toFixed(1)}s;--d:-${rnd(0,7).toFixed(1)}s;fill:${['#B8892E','#E7CF94','#D6A64A'][i%3]}"><use href="#spark"/></svg>`;$('glitter').innerHTML=h;}
+function startGlitter(){if(calm||lite)return;let h='';for(let i=0,n=isPhone()?14:30;i<n;i++)h+=`<svg aria-hidden="true" class="spark" style="left:${rnd(2,98).toFixed(1)}%;top:${rnd(2,98).toFixed(1)}%;--s:${rnd(6,11).toFixed(0)}px;--t:${rnd(3.5,7.5).toFixed(1)}s;--d:-${rnd(0,7).toFixed(1)}s;fill:${['#B8892E','#E7CF94','#D6A64A'][i%3]}"><use href="#spark"/></svg>`;$('glitter').innerHTML=h;}
 
 /* ================= CANDLE GLOW (desktop) / TAP RIPPLE (phones); sleeps when idle ================= */
 const fine=matchMedia('(hover: hover) and (pointer: fine)').matches;let trail=[],ripples=[],mouse=null,lastMove=0,glowOn=false;
-const wake=()=>{if(!glowOn&&!reduce){glowOn=true;requestAnimationFrame(glowLoop);}};
+const wake=()=>{if(!glowOn&&!calm){glowOn=true;requestAnimationFrame(glowLoop);}};
 if(fine)addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;mouse={x:e.clientX,y:e.clientY};lastMove=performance.now();trail.push({x:e.clientX,y:e.clientY,a:1});if(trail.length>12)trail.shift();wake();},{passive:true});
 addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){ripples.push({x:e.clientX,y:e.clientY,t:performance.now()});wake();}},{passive:true});
 function glowLoop(now){gx.clearRect(0,0,VW,VH);let alive=false;
@@ -1230,6 +1240,9 @@ function glowLoop(now){gx.clearRect(0,0,VW,VH);let alive=false;
 const lanternSvg='<svg viewBox="0 0 44 64" aria-hidden="true" focusable="false"><ellipse cx="22" cy="34" rx="22" ry="28" fill="#F5A100" opacity=".22"/><path d="M8 10h28l4 40q-18 8-36 0z" fill="#F7B53A"/><path d="M14 12h16l2 36q-10 4-20 0z" fill="#FFD77A" opacity=".7"/><rect x="10" y="6" width="24" height="5" rx="2" fill="#B5651D"/><rect x="8" y="48" width="28" height="4" rx="2" fill="#7A3410"/><ellipse cx="22" cy="44" rx="4" ry="6" fill="#FFF6E0"/></svg>';
 $('lantern-btn').addEventListener('click',()=>{const box=$('lanterns');[22,50,76].forEach((x,i)=>{const l=document.createElement('div');l.className='lantern';l.style.left=`calc(${x+rnd(-6,6)}% - 23px)`;l.style.animationDelay=`${i*.45}s`;l.innerHTML=lanternSvg;
   if(reduce){l.style.bottom='35%';setTimeout(()=>l.remove(),2500);}else setTimeout(()=>l.remove(),10500);box.appendChild(l);});});
+
+/* ================= PAUSE HERO WHEN OFF SCREEN ================= */
+if('IntersectionObserver' in window){const hero=document.querySelector('.hero');new IntersectionObserver(e=>hero.classList.toggle('off',!e[0].isIntersecting)).observe(hero);}
 
 /* ================= OPENING ENVELOPE ================= */
 const rev=$('reveal'),env=$('env');let opened=false;
