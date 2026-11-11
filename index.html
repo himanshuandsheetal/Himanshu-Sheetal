@@ -41,6 +41,7 @@ addEventListener('error',function(){document.documentElement.classList.remove('j
   Countdown ......... 12 Dec 2026, 5:00 PM IST (+05:30), the Baarat
   K2 venue .......... K2 Garden and Resort, MR 10, Indore   https://maps.app.goo.gl/Sv7SnbD5YgyUdeBZ6
   Reception venue ... Shree Hari Garden, Gomti Nagar, Dewas https://maps.app.goo.gl/UbReaYKtUwakcCSP8
+  Music ............. music.mp3 next to this file; song 0:05–1:10 (65 s clip), fades and loops
   Family ............ With Love, Parihar Family
   Events ............ 1 Mehndi 11 Dec 2026 Friday 5:00 PM | 2 Haldi 11 DEC 2026 Thursday 04:00 PM |
                       3 Baarat(Here comes the Groom!) 12 Dec 2026 Saturday 5:00 PM, K2 |
@@ -479,6 +480,21 @@ body{background-attachment:scroll}
 .seal::before{content:"";position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,rgba(255,228,170,.85),transparent 65%);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .opening .seal::before{opacity:1}
 
+
+/* ================= MUSIC BUTTON ================= */
+.music{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:55;width:52px;height:52px;border-radius:50%;
+  display:grid;place-items:center;border:0;cursor:pointer;color:#FFF4E4;
+  background:radial-gradient(circle at 35% 30%,#8E1B3D,var(--maroon) 55%,var(--maroon-d));
+  box-shadow:0 0 0 2px #fff6dc,0 0 0 4px #C9A24D,0 10px 24px rgba(59,6,22,.35);transition:transform .4s var(--ease),opacity .4s var(--ease)}
+.music[hidden]{display:none}
+.music:hover{transform:scale(1.06)}
+.music svg{width:24px;height:24px}
+.music .bars rect{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.35)}
+.music.on .bars rect{animation:eq .9s var(--ease-io) infinite alternate}
+.music.on .bars rect:nth-child(2){animation-delay:-.3s}.music.on .bars rect:nth-child(3){animation-delay:-.6s}
+.music .off{display:none}.music:not(.on) .off{display:block}
+@keyframes eq{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
 /* ================= REDUCED MOTION ================= */
 /* "Reduce motion" (often switched on by Android battery saver): keep the envelope and
    function scenes, drop only ambient effects (petals, glitter, glow, parallax, spin, scroll-in). */
@@ -673,6 +689,12 @@ body{background-attachment:scroll}
     </div>
   </section>
 </main>
+
+<!-- ================= MUSIC (music.mp3 sits next to this file) ================= -->
+<button class="music" id="music" type="button" aria-pressed="false" aria-label="Play music" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="bars" fill="#E7CF94"><rect x="4" y="5" width="3.6" height="15" rx="1.5"/><rect x="10.2" y="3" width="3.6" height="17" rx="1.5"/><rect x="16.4" y="7" width="3.6" height="13" rx="1.5"/></g>
+  <path class="off" d="M3 3l18 18" stroke="#FFF4E4" stroke-width="2" stroke-linecap="round"/></svg>
+</button>
 
 <!-- ================= FOOTER ================= -->
 <footer>
@@ -1011,6 +1033,28 @@ $('lantern-btn').addEventListener('click',()=>{const box=$('lanterns');[22,50,76
 /* ================= PAUSE HERO WHEN OFF SCREEN ================= */
 if('IntersectionObserver' in window){const hero=document.querySelector('.hero');new IntersectionObserver(e=>hero.classList.toggle('off',!e[0].isIntersecting)).observe(hero);}
 
+
+/* ================= MUSIC: starts on the seal tap, plays to 1:06, fades and loops ================= */
+const MUSIC={src:'music.mp3',start:0,end:65,fade:2.5};   // clip = song 0:05–1:10
+const mBtn=$('music');let audio=null,gain=null,actx=null,musicOn=false,musicFailed=false;
+let wantMusic=true;try{wantMusic=localStorage.getItem('music-off')!=='1';}catch(e){}
+function setVol(v){if(gain)gain.gain.value=v;else if(audio)audio.volume=Math.max(0,Math.min(1,v));}
+function initAudio(){if(audio)return;audio=new Audio();audio.preload='auto';audio.src=MUSIC.src;audio.loop=true;audio.playsInline=true;audio.setAttribute('playsinline','');
+  try{const AC=window.AudioContext||window.webkitAudioContext;if(AC&&location.protocol!=='file:'){actx=new AC();const src=actx.createMediaElementSource(audio);gain=actx.createGain();src.connect(gain).connect(actx.destination);}}catch(e){gain=null;}
+  audio.addEventListener('timeupdate',()=>{const t=audio.currentTime,end=Math.min(MUSIC.end,(audio.duration||MUSIC.end)-0.3);
+    if(t>=end-0.05){audio.currentTime=MUSIC.start;setVol(0);}
+    const fin=Math.min(1,(t-MUSIC.start)/1.2),fout=Math.min(1,(end-t)/MUSIC.fade);setVol(Math.max(0,Math.min(fin,fout)));});
+  audio.addEventListener('ended',()=>{if(musicOn){audio.currentTime=MUSIC.start;audio.play().catch(()=>{});}});
+  audio.addEventListener('error',()=>{musicFailed=true;mBtn.hidden=true;});
+  audio.addEventListener('canplay',()=>{if(!musicFailed)mBtn.hidden=false;},{once:true});}
+function playMusic(){initAudio();if(musicFailed)return;if(actx&&actx.state==='suspended')actx.resume();
+  if(audio.currentTime<MUSIC.start)audio.currentTime=MUSIC.start;
+  const pr=audio.play();musicOn=true;mBtn.classList.add('on');mBtn.setAttribute('aria-pressed','true');mBtn.setAttribute('aria-label','Pause music');
+  if(pr&&pr.catch)pr.catch(()=>{musicOn=false;mBtn.classList.remove('on');mBtn.setAttribute('aria-pressed','false');mBtn.setAttribute('aria-label','Play music');});}
+function pauseMusic(){if(audio)audio.pause();musicOn=false;mBtn.classList.remove('on');mBtn.setAttribute('aria-pressed','false');mBtn.setAttribute('aria-label','Play music');}
+mBtn.addEventListener('click',()=>{if(musicOn){pauseMusic();try{localStorage.setItem('music-off','1');}catch(e){}}else{playMusic();try{localStorage.removeItem('music-off');}catch(e){}}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&musicOn){audio.pause();mBtn.dataset.resume='1';}else if(!document.hidden&&mBtn.dataset.resume){delete mBtn.dataset.resume;playMusic();}});
+
 /* ================= OPENING ENVELOPE ================= */
 const rev=$('reveal'),env=$('env');let opened=false;
 const bgEls=()=>[document.querySelector('.hero'),document.getElementById('main'),document.querySelector('body>footer'),document.querySelector('.skip')].filter(Boolean);
@@ -1019,7 +1063,7 @@ if(!reduce)setInert(true);
 let sp='';for(let i=0;i<24;i++){const a=i/24*Math.PI*2,v=rnd(70,160);sp+=`<svg aria-hidden="true" class="sp" style="--dx:${(Math.cos(a)*v).toFixed(0)};--dy:${(Math.sin(a)*v-40).toFixed(0)};fill:${['#FFF4E4','#E7CF94','#F5A100'][i%3]}"><use href="#spark"/></svg>`;}
 $('sparks').innerHTML=sp;
 function finishOpen(){setInert(false);rev.classList.add('gone');document.body.classList.remove('locked');buildFlight();startPetals();startGlitter();const h=document.querySelector('.names');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}}
-function openEnvelope(){if(opened)return;opened=true;env.classList.add('opening');rev.classList.add('lift');setTimeout(()=>rev.classList.add('fade'),1150);setTimeout(finishOpen,1700);}
+function openEnvelope(){if(opened)return;opened=true;if(wantMusic)playMusic();else{initAudio();}env.classList.add('opening');rev.classList.add('lift');setTimeout(()=>rev.classList.add('fade'),1150);setTimeout(finishOpen,1700);}
 $('seal').addEventListener('click',openEnvelope);env.addEventListener('click',openEnvelope);
 document.addEventListener('keydown',e=>{if(opened)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();openEnvelope();}else if(e.key==='Tab'){e.preventDefault();$('seal').focus();}});
 if(reduce){opened=true;finishOpen();}else $('seal').focus({preventScroll:true});
