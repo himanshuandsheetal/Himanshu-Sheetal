@@ -29,8 +29,8 @@
 <!-- Fonts load without blocking the first paint -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@400;500;600&family=Mukta:wght@400;600&family=Tiro+Devanagari+Hindi&family=Great+Vibes&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@400;500;600&family=Mukta:wght@400;600&family=Tiro+Devanagari+Hindi&family=Great+Vibes&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@400;500;600&family=Great+Vibes&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@400;500;600&family=Great+Vibes&display=swap"></noscript>
 <script>document.documentElement.classList.add('js');
 /* If any script fails, drop the envelope so the invitation is still readable */
 addEventListener('error',function(){document.documentElement.classList.remove('js');if(document.body)document.body.classList.remove('locked');});</script>
@@ -45,8 +45,6 @@ addEventListener('error',function(){document.documentElement.classList.remove('j
   Events ............ 1 Mehndi 11 Dec 2026 Friday 5:00 PM | 2 Haldi 11 DEC 2026 Thursday 04:00 PM |
                       3 Baarat(Here comes the Groom!) 12 Dec 2026 Saturday 5:00 PM, K2 |
                       4 7 vows of Eternity 12 Dec 2026 Saturday 11:00 PM, K2 | 5 Reception 13 Dec 2026 Sunday 7:30 PM
-  Photos ............ photo1.jpg … photo5.jpg next to this file
-  Aashirwad wall .... Hindi / English switch; paste your Google Apps Script web-app URL into AASHIRWAD_URL (see aashirwad-Code.gs)
 -->
 <style>
 /* ================= TOKENS =================
@@ -63,8 +61,6 @@ addEventListener('error',function(){document.documentElement.classList.remove('j
   --ease-io:cubic-bezier(.65,0,.35,1);
   --track:.28em;
   --display:"Cormorant Garamond","Iowan Old Style","Palatino Linotype",Georgia,serif;
-  --hindi:"Mukta","Noto Sans Devanagari","Nirmala UI",sans-serif;
-  --hindi-display:"Tiro Devanagari Hindi","Noto Serif Devanagari","Mukta",serif;
   --sans:"Jost","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --r:18px;
   color-scheme:light;
@@ -223,33 +219,10 @@ a{color:var(--maroon)}
 .stage svg{display:block;width:100%;height:100%}
 .hint{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);white-space:nowrap;font:500 14px/1 var(--sans);padding:8px 14px;border-radius:999px;background:rgba(255,253,248,.92);color:var(--maroon);border:1px solid var(--line)}
 
-/* ================= ALBUM ================= */
+/* ================= VARMALA ================= */
 .couple-ill{display:block;width:min(420px,100%);margin:0 auto;padding:0;border:0;background:none;cursor:pointer;border-radius:16px}
 .couple-ill svg{display:block;width:100%;height:auto;overflow:visible}
 .ill-hint{text-align:center;margin:4px 0 34px;color:var(--maroon);font-family:var(--display);font-style:italic;font-size:1.25rem;min-height:1.6em}
-.album{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media (min-width:760px){.album{grid-template-columns:repeat(3,1fr);gap:16px}}
-.ph{position:relative;border:0;padding:0;cursor:zoom-in;aspect-ratio:3/4;overflow:hidden;border-radius:110px 110px 14px 14px/80px 80px 14px 14px;background:var(--paper);box-shadow:0 0 0 1.5px var(--gold),0 10px 24px rgba(78,13,32,.12)}
-.album .ph:first-child{grid-column:span 2;aspect-ratio:4/3}
-@media (min-width:760px){.album .ph:first-child{grid-row:span 2;grid-column:span 1;aspect-ratio:auto}}
-.ph img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .5s ease,transform .6s ease}
-.ph.loaded img{opacity:1}
-.ph:hover img{transform:scale(1.03)}
-.ph::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%) var(--paper);background-size:220% 100%;animation:shimmer 1.4s linear infinite}
-.ph.loaded::after{display:none}
-@keyframes shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
-.ph.missing::after{animation:none;background:
-   radial-gradient(circle at 50% 44%,transparent 22%,rgba(184,137,46,.35) 22.5%,transparent 24%),
-   repeating-conic-gradient(from 0deg at 50% 44%,rgba(184,137,46,.12) 0 9deg,transparent 9deg 18deg),var(--paper)}
-.lb{position:fixed;inset:0;z-index:70;background:rgba(36,10,18,.94);display:none;align-items:center;justify-content:center;padding:64px 12px 84px}
-.lb.on{display:flex}
-.lb-fig{position:relative;margin:0;width:min(900px,100%);height:100%;display:grid;place-items:center;touch-action:pan-y}
-.lb-fig img{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 0 0 1.5px var(--gold-l)}
-.lb-missing{display:block;width:min(420px,90%);aspect-ratio:3/4;border-radius:12px;background:repeating-conic-gradient(from 0deg at 50% 44%,rgba(231,207,148,.18) 0 9deg,transparent 9deg 18deg),#5a1630}
-.lb-btn{position:absolute;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--gold-l);background:rgba(78,13,32,.85);color:#FFF4E4;cursor:pointer;display:grid;place-items:center}
-.lb-btn svg{width:22px;height:22px}
-.lb-close{top:12px;right:12px}.lb-prev{left:12px;top:50%;transform:translateY(-50%)}.lb-next{right:12px;top:50%;transform:translateY(-50%)}
-.lb-count{position:absolute;bottom:26px;left:0;right:0;text-align:center;color:#FFF4E4;margin:0}
 
 /* ================= LANTERN + FOOTER ================= */
 .lantern-box{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#5a1630,var(--maroon-d));color:#FFF4E4;border:0}
@@ -288,56 +261,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;b
   .evsec.alt .stage{order:2}
 }
 
-/* ================= AASHIRWAD WALL (Hindi) ================= */
-.hi,.hi *{font-family:var(--hindi)}
-#aashirwad.hi h2,#aashirwad.hi h3{font-family:var(--hindi-display);font-weight:400;line-height:1.3}
-#aashirwad .wform input[type=text],#aashirwad .wform textarea,#aashirwad .wish p,#aashirwad .wish .who{font-family:"Mukta","Jost","Noto Sans Devanagari",sans-serif}
-.langbar{display:flex;justify-content:center;gap:0;margin:0 auto 22px;width:max-content;max-width:100%;padding:4px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 6px 16px rgba(78,13,32,.08)}
-.lang{min-height:48px;min-width:112px;padding:10px 20px;border:0;border-radius:999px;background:transparent;color:var(--maroon);font:600 1.1rem/1 var(--sans);cursor:pointer}
-.lang[lang=hi]{font-family:var(--hindi);font-size:1.2rem}
-.lang[aria-pressed=true]{background:var(--maroon);color:#FFF8EE}
-#aashirwad .sec-head p{font-size:1.1rem}
-.wgrid{display:grid;gap:24px;grid-template-columns:1fr;align-items:start}
-@media (min-width:900px){.wgrid{grid-template-columns:420px 1fr}.wform{position:sticky;top:20px}}
-.wform{padding:22px 20px 24px;display:flex;flex-direction:column;gap:18px;font-size:18px}
-.field{display:flex;flex-direction:column;gap:8px;border:0;margin:0;padding:0;min-width:0}
-.field>label,.field>legend{font-weight:600;font-size:1.15rem;color:var(--maroon);padding:0}
-.opt{font-weight:400;font-size:.9rem;color:var(--muted)}
-.wform input[type=text],.wform textarea{width:100%;font:400 18px/1.5 var(--hindi);color:var(--ink);background:#fff;border:2px solid rgba(184,137,46,.5);border-radius:14px;padding:14px 16px;min-height:56px}
-.wform textarea{min-height:130px;resize:vertical}
-.wform input:focus,.wform textarea:focus{outline:none;border-color:var(--maroon);box-shadow:0 0 0 4px rgba(122,22,49,.12)}
-.wform .bad{border-color:#B3261E!important;background:#FFF5F4}
-.chips{display:flex;flex-wrap:wrap;gap:10px}
-.chip{position:relative}
-.chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.chip span,.qchip{display:inline-flex;align-items:center;min-height:48px;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(184,137,46,.6);background:#FFFDF8;color:var(--ink);font:400 17px/1.2 var(--hindi);cursor:pointer;text-align:left}
-.chip input:checked+span{background:var(--maroon);border-color:var(--maroon);color:#FFF8EE}
-.chip input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
-.qchip:active,.chip span:active{transform:scale(.97)}
-.qchip.on{background:rgba(231,207,148,.45);border-color:var(--gold)}
-.qtitle{margin:0;color:var(--muted);font-size:1rem}
-.whelp{margin:-6px 0 0;color:var(--muted);font-size:.95rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.wsend{min-height:60px;font:600 1.25rem/1.1 var(--hindi);border-radius:16px}
-.wsend[disabled]{opacity:.7;cursor:wait}
-.wstatus{margin:0;min-height:1.5em;font-size:1.05rem;text-align:center}
-.wstatus.ok{color:#2E6B3F;font-weight:600}.wstatus.err{color:#B3261E;font-weight:600}
-.wall-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
-.wall-head h3{font-size:clamp(1.45rem,6vw,1.7rem);color:var(--maroon)}
 .wcount{color:var(--muted);font-size:1rem;white-space:nowrap}
-.wall-head{flex-wrap:wrap}
-.wall{list-style:none;margin:0;padding:0;columns:1;column-gap:16px}
-@media (min-width:600px){.wall{columns:2}}
-.wish{break-inside:avoid;margin:0 0 16px;padding:18px 18px 16px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 16px rgba(78,13,32,.06);position:relative}
-.wish::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--foil)}
-.wish p{margin:0 0 10px;font-size:1.15rem;line-height:1.55;color:var(--ink);overflow-wrap:anywhere;white-space:pre-line}
-.wish footer,.wish .who{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:.98rem;color:var(--muted);padding:0;background:none;border:0;text-align:left}
-.wish .who b{color:var(--maroon);font-weight:600}
-.wish.new{animation:pop .6s ease-out}
-.wish.pending{opacity:.6}
-@keyframes pop{from{transform:translateY(-10px) scale(.97);opacity:0}to{transform:none;opacity:1}}
-.wempty{padding:22px;text-align:center;color:var(--muted);font-size:1.1rem;border:1.5px dashed var(--line);border-radius:16px;margin:0}
-.wmore{margin:4px auto 0;display:flex}
 
 /* ================= SCROLL REVEAL ================= */
 .rv{transition:opacity .8s ease,transform .8s ease}
@@ -440,7 +364,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:38;
 ::selection{background:rgba(201,162,77,.35)}
 
 /* ---- typography: editorial tracking ---- */
-.subtitle,.rv-date,.cd span,.evnum,.tag,.facts dt,.hero-time,.f-date,.wcount,.rv-hint small{letter-spacing:var(--track);text-transform:uppercase}
+.subtitle,.rv-date,.cd span,.evnum,.tag,.facts dt,.hero-time,.f-date,.rv-hint small{letter-spacing:var(--track);text-transform:uppercase}
 .subtitle{font-size:.82rem;font-weight:500;color:var(--maroon)}
 .rv-date{font-size:.85rem}
 .hero-time{font-size:.8rem;font-weight:500;color:var(--gold-d);margin:4px 0 30px}
@@ -451,7 +375,6 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:38;
 .facts{gap:12px 22px}
 .cd span{font-size:.68rem;margin-top:10px}
 .f-date{font-family:var(--sans);font-size:.85rem;font-weight:500;color:var(--gold-d)}
-.wcount{font-size:.72rem}
 h1,h2,h3{letter-spacing:.01em}
 .sec-head h2,.evhead h2{font-weight:600}
 .sec-head p{font-size:1.02rem;line-height:1.75;letter-spacing:.01em}
@@ -471,7 +394,6 @@ h1,h2,h3{letter-spacing:.01em}
 .venues,.events{gap:28px}
 .countdown{gap:14px}
 .cd{padding:22px 4px 16px}
-.wform{padding:30px 26px 32px;gap:22px}
 footer{padding:84px 0 calc(84px + env(safe-area-inset-bottom))}
 @media (min-width:860px){.evgrid{column-gap:56px}.sec{padding:112px 0}.evsec{padding:112px 0}}
 @media (max-width:420px){.sec{padding:72px 0}.evsec{padding:76px 0}.arch{padding:68px 20px 50px}.venue .vbody,.evinfo{padding:26px 22px 28px}}
@@ -493,14 +415,7 @@ footer::before{height:4px}
 .evsec::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(520px,70%);height:1px;background:var(--foil)}
 .evsec .stage{border:0;box-shadow:0 0 0 1.5px #C9A24D,0 0 0 6px rgba(255,252,245,.9),0 0 0 7px rgba(184,137,46,.35),0 28px 50px -18px rgba(59,6,22,.35)}
 .portraits img{box-shadow:0 0 0 2px #fff6dc,0 0 0 4px #C9A24D,0 10px 22px rgba(59,6,22,.22)}
-.ph{box-shadow:0 0 0 1.5px #C9A24D,0 0 0 5px rgba(255,252,245,.9),0 0 0 6px rgba(184,137,46,.3),0 16px 30px -10px rgba(59,6,22,.25)}
 
-/* ---- Hindi: regal weight to match the serif display ---- */
-#aashirwad.hi h2{font-family:var(--hindi-display);font-size:clamp(2.4rem,9vw,3.4rem);letter-spacing:.02em;color:var(--maroon);text-shadow:0 1px 0 rgba(255,255,255,.6)}
-#aashirwad.hi h3{font-family:var(--hindi-display);letter-spacing:.01em}
-#aashirwad.hi .sec-head p,#aashirwad.hi .field>label,#aashirwad.hi .field>legend{letter-spacing:.01em}
-#aashirwad .field>label,#aashirwad .field>legend{font-weight:600}
-.langbar{border-color:rgba(184,137,46,.5);background:linear-gradient(180deg,#FFFDF8,#F8EEDB)}
 
 /* ---- buttons: foil border glow ---- */
 .btn{position:relative;isolation:isolate;letter-spacing:.06em;transition:background-color .5s var(--ease),color .5s var(--ease),box-shadow .6s var(--ease),transform .5s var(--ease)}
@@ -513,14 +428,11 @@ footer::before{height:4px}
 .btn.solid{background:linear-gradient(180deg,#7E1735,var(--maroon) 55%,#56091F);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 10px 22px -8px rgba(59,6,22,.45)}
 .btn.solid:hover{background:linear-gradient(180deg,#8A1C3D,#6E1030 55%,#4A071A)}
 .lantern-box .btn.solid{background:var(--foil-soft);color:var(--maroon-d);border-color:transparent}
-.chip span,.qchip,.lang{transition:background-color .45s var(--ease),border-color .45s var(--ease),color .45s var(--ease),transform .4s var(--ease),box-shadow .45s var(--ease)}
-.chip span:hover,.qchip:hover{box-shadow:0 0 0 1px rgba(201,162,77,.6),0 0 14px rgba(231,207,148,.45)}
 :focus-visible{outline:2px solid #C9A24D;outline-offset:4px}
 
 /* ---- motion curves ---- */
 .rv{transition:opacity 1.1s var(--ease),transform 1.1s var(--ease)}
 .rv-hide{transform:translateY(28px)}
-.ph img{transition:opacity .8s var(--ease),transform 1.2s var(--ease)}
 .reveal{transition:opacity .6s var(--ease-io)}
 
 /* ---- envelope: tactile, weighty, graceful ---- */
@@ -553,8 +465,8 @@ footer::before{height:4px}
 
 /* ================= QA FIXES ================= */
 /* touch targets >= 48px */
+.btn{min-height:50px}
 .scroll-hint{min-width:48px;min-height:48px;justify-content:center}
-.qchip,.chip span,.lang,.btn,.lb-btn{min-height:50px}
 .linkbtn{min-height:48px}
 /* AA contrast: darker foil for gold text on ivory */
 .names .and,.blessing,.portraits span,.f-fam{background:linear-gradient(115deg,#5E3F0F 0%,#7A5518 30%,#8E6420 48%,#6E4C14 70%,#7A5518 100%);-webkit-background-clip:text;background-clip:text;color:#6E4C14}
@@ -563,23 +475,17 @@ footer::before{height:4px}
 body{background-attachment:scroll}
 .arch::before{animation:none;background-size:100% 100%}
 .btn::before{transition:opacity .6s var(--ease)}
-.ph::after{background:var(--paper);animation:none}
-.ph::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-100%);animation:shimmerT 1.4s linear infinite}
-.ph.loaded::before,.ph.missing::before{display:none}
-@keyframes shimmerT{to{transform:translateX(100%)}}
 @keyframes sealPress{0%{transform:translate(-50%,-50%) scale(1)}18%{transform:translate(-50%,-50%) scale(.9)}45%{transform:translate(-50%,-50%) scale(1.12);opacity:1}100%{transform:translate(-50%,-50%) scale(1.25) translateY(-14px);opacity:0}}
 .seal::before{content:"";position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,rgba(255,228,170,.85),transparent 65%);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .opening .seal::before{opacity:1}
-@media (prefers-reduced-motion:reduce){.ph::before{display:none}}
 
 /* ================= REDUCED MOTION ================= */
 /* "Reduce motion" (often switched on by Android battery saver): keep the envelope and
    function scenes, drop only ambient effects (petals, glitter, glow, parallax, spin, scroll-in). */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .mandala canvas,.arch::before,.env,.ph::before,.spark{animation:none!important}
+  .mandala canvas,.arch::before,.env,.spark{animation:none!important}
   .rv,.rv-hide{opacity:1!important;transform:none!important;transition:none!important}
-  .ph img{opacity:1}
   #petals,#glow,#glitter{display:none}
 }
 /* Pause hero decorations while the hero is off screen (saves battery on phones) */
@@ -748,52 +654,11 @@ body{background-attachment:scroll}
     </div>
   </section>
 
-  <!-- ================= PHOTO ALBUM ================= -->
-  <section class="sec" id="album-sec" aria-labelledby="a-title">
+  <!-- ================= VARMALA ================= -->
+  <section class="sec" id="varmala" aria-label="Varmala" style="padding-bottom:24px">
     <div class="wrap">
-      <div class="sec-head rv"><h2 id="a-title">Photo Album</h2><svg class="orn" aria-hidden="true"><use href="#ornament"/></svg></div>
       <button class="couple-ill rv" id="couple-ill" type="button" aria-label="Himanshu and Sheetal illustration. Tap for the varmala."></button>
       <p class="ill-hint" id="ill-hint" aria-live="polite">Tap the couple for the varmala</p>
-      <div class="album" id="album"></div>
-    </div>
-  </section>
-
-  <!-- ================= AASHIRWAD WALL (Hindi / English) ================= -->
-  <section class="sec hi" id="aashirwad" lang="hi" aria-labelledby="w-title">
-    <div class="wrap">
-      <div class="langbar" role="group" aria-label="भाषा चुनें / Choose language">
-        <button type="button" class="lang" data-lang="hi" lang="hi" aria-pressed="true">हिंदी</button>
-        <button type="button" class="lang" data-lang="en" lang="en" aria-pressed="false">English</button>
-      </div>
-      <div class="sec-head rv"><h2 id="w-title" data-t="title">आशीर्वाद</h2><p data-t="sub">वर-वधू को अपना आशीर्वाद और शुभकामनाएँ भेजिए</p><svg class="orn" aria-hidden="true"><use href="#ornament"/></svg></div>
-      <div class="wgrid">
-        <form class="card wform rv" id="w-form" novalidate>
-          <div class="field">
-            <label for="w-name" data-t="name">आपका नाम</label>
-            <input type="text" id="w-name" name="name" maxlength="40" autocomplete="name" enterkeyhint="next" placeholder="जैसे: सुनीता मौसी">
-          </div>
-          <fieldset class="field">
-            <legend><span data-t="who">आप कौन हैं?</span> <span class="opt" data-t="opt">(चुनना ज़रूरी नहीं)</span></legend>
-            <div class="chips" id="w-rel"></div>
-          </fieldset>
-          <div class="field">
-            <label for="w-msg" data-t="msg">आपका आशीर्वाद</label>
-            <p class="qtitle" id="w-qt" data-t="qt">नीचे से छूकर चुनें, या खुद लिखें:</p>
-            <div class="chips" id="w-quick" role="group" aria-labelledby="w-qt"></div>
-            <textarea id="w-msg" name="msg" maxlength="300" rows="4" placeholder="यहाँ लिखें…"></textarea>
-            <p class="whelp"><span data-t="mic">कीबोर्ड पर माइक बटन दबाकर बोलकर भी लिख सकते हैं।</span><span id="w-left" aria-live="polite">0 / 300</span></p>
-          </div>
-          <div class="hp" aria-hidden="true"><label for="w-site">Website</label><input type="text" id="w-site" name="website" tabindex="-1" autocomplete="off"></div>
-          <button class="btn solid block wsend" id="w-send" type="submit" data-t="send">आशीर्वाद भेजें</button>
-          <p class="wstatus" id="w-status" role="status" aria-live="polite"></p>
-        </form>
-        <div class="wall-wrap">
-          <div class="wall-head"><h3 data-t="wall">सबके आशीर्वाद</h3><span class="wcount" id="w-count"></span></div>
-          <ul class="wall" id="w-wall" aria-live="polite"></ul>
-          <p class="wempty" id="w-empty" data-t="empty">अभी तक कोई आशीर्वाद नहीं आया। पहला आशीर्वाद आप भेजिए!</p>
-          <button class="btn wmore" id="w-more" type="button" hidden data-t="more">और आशीर्वाद देखें</button>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -823,15 +688,6 @@ body{background-attachment:scroll}
   </div>
 </footer>
 
-<!-- ================= LIGHTBOX ================= -->
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
-  <figure class="lb-fig" id="lb-fig"></figure>
-  <button class="lb-btn lb-close" id="lb-close" type="button" aria-label="Close photo"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/></svg></button>
-  <button class="lb-btn lb-prev" id="lb-prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-  <button class="lb-btn lb-next" id="lb-next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-  <p class="lb-count" id="lb-count" aria-live="polite"></p>
-</div>
-
 <script>
 /* ================= DETAILS ================= */
 const VENUES={
@@ -846,9 +702,6 @@ const EVENTS=[
   {name:'7 vows of Eternity',           date:'12 Dec 2026',day:'Saturday',time:'11:00 PM',venue:'k2',       dress:'',scene:'wedding',  utc:'20261212T173000Z'},
   {name:'Reception',                    date:'13 Dec 2026',day:'Sunday',  time:'7:30 PM', venue:'reception',dress:'',scene:'reception',utc:'20261213T140000Z'}
 ];
-/* Aashirwad wall: paste the Google Apps Script web-app URL here (ends with /exec). Setup steps are in aashirwad-Code.gs */
-const AASHIRWAD_URL='';
-const PHOTOS=[1,2,3,4,5].map(n=>({src:`photo${n}.jpg`,pos:'50% 30%',alt:`Himanshu and Sheetal, photo ${n} of 5`}));
 
 (function(){
 'use strict';
@@ -1059,77 +912,6 @@ ill.addEventListener('click',()=>{if(!vmDone){vmDone=true;illSvg.classList.add('
   else{for(let i=0;i<4;i++)setTimeout(()=>heart(rnd(130,230)),i*110);restart(illSvg,'twirl');setTimeout(()=>illSvg.classList.remove('twirl'),950);}});
 
 
-/* ================= AASHIRWAD WALL (Hindi / English) ================= */
-(function(){
-  const T={
-    hi:{title:'आशीर्वाद',sub:'वर-वधू को अपना आशीर्वाद और शुभकामनाएँ भेजिए',name:'आपका नाम',namePh:'जैसे: सुनीता मौसी',who:'आप कौन हैं?',opt:'(चुनना ज़रूरी नहीं)',
-      rels:['परिवार','रिश्तेदार','दोस्त','पड़ोसी','साथ काम करने वाले'],msg:'आपका आशीर्वाद',qt:'नीचे से छूकर चुनें, या खुद लिखें:',
-      quick:['सदा सुखी रहो','जोड़ी सदा सलामत रहे','ढेर सारा प्यार और आशीर्वाद','नए जीवन की हार्दिक शुभकामनाएँ'],msgPh:'यहाँ लिखें…',
-      mic:'कीबोर्ड पर माइक बटन दबाकर बोलकर भी लिख सकते हैं।',send:'आशीर्वाद भेजें',sending:'भेजा जा रहा है…',wall:'सबके आशीर्वाद',count:n=>`${n} आशीर्वाद`,
-      empty:'अभी तक कोई आशीर्वाद नहीं आया। पहला आशीर्वाद आप भेजिए!',more:'और आशीर्वाद देखें',errName:'कृपया अपना नाम लिखें।',errMsg:'कृपया आशीर्वाद लिखें, या ऊपर से कोई एक चुनें।',
-      notReady:'आशीर्वाद दीवार अभी चालू की जा रही है। थोड़ी देर बाद फिर से भेजें।',ok:'धन्यवाद! आपका आशीर्वाद पहुँच गया।',fail:'आशीर्वाद नहीं जा पाया। इंटरनेट जाँचकर फिर से "आशीर्वाद भेजें" दबाएँ।',joiner:'। ',locale:'hi-IN'},
-    en:{title:'Aashirwad',sub:'Send your blessings and good wishes to the bride and groom',name:'Your name',namePh:'e.g. Sunita Aunty',who:'Who are you?',opt:'(optional)',
-      rels:['Family','Relative','Friend','Neighbour','Colleague'],msg:'Your blessing',qt:'Tap one below, or write your own:',
-      quick:['Stay happy forever','May your jodi stay blessed always','Lots of love and blessings','Heartfelt wishes for your new life'],msgPh:'Write here…',
-      mic:'You can also speak instead of typing: tap the mic on your keyboard.',send:'Send Blessing',sending:'Sending…',wall:'Blessings from everyone',count:n=>`${n} blessing${n===1?'':'s'}`,
-      empty:'No blessings yet. Be the first to send one!',more:'See more blessings',errName:'Please write your name.',errMsg:'Please write a blessing, or tap one above.',
-      notReady:'The blessing wall is being set up. Please try again a little later.',ok:'Thank you! Your blessing has been sent.',fail:'Your blessing could not be sent. Check your internet and tap "Send Blessing" again.',joiner:'. ',locale:'en-IN'}
-  };
-  const sec=$('aashirwad'),form=$('w-form'),nameEl=$('w-name'),msgEl=$('w-msg'),send=$('w-send'),status=$('w-status'),wall=$('w-wall'),empty=$('w-empty'),more=$('w-more'),countEl=$('w-count'),relBox=$('w-rel'),quickBox=$('w-quick');
-  const DEMO=Array.isArray(window.AASHIRWAD_DEMO)?window.AASHIRWAD_DEMO:null;
-  const PAGE=8;let all=DEMO?DEMO.slice():[],shown=PAGE,busy=false,L='hi',lastStatus=null;
-  try{const s=localStorage.getItem('aashirwad-lang');if(s==='en'||s==='hi')L=s;}catch(e){}
-  const t=()=>T[L];
-  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const when=ts=>{try{return new Date(ts).toLocaleDateString(t().locale,{day:'numeric',month:'long'});}catch(e){return '';}};
-  const card=(w,cls)=>`<li class="wish ${cls||''}"><p>${esc(w.msg)}</p><div class="who"><b>${esc(w.name)}</b>${w.rel?`<span>${esc(w.rel)}</span>`:''}${w.t?`<span>${when(w.t)}</span>`:''}</div></li>`;
-  function render(){wall.innerHTML=all.slice(0,shown).map(w=>card(w)).join('');empty.hidden=all.length>0;more.hidden=all.length<=shown;countEl.textContent=all.length?t().count(all.length):'';}
-  function say(key,kind){lastStatus=key?[key,kind]:null;status.textContent=key?t()[key]:'';status.className='wstatus '+(kind||'');}
-  function markQuick(){quickBox.querySelectorAll('.qchip').forEach(x=>x.classList.toggle('on',msgEl.value.includes(x.textContent.trim())));}
-  // Switch every label, button, chip and message to the chosen language
-  function setLang(l){
-    const relIdx=[...relBox.querySelectorAll('input')].findIndex(i=>i.checked);L=l;const d=t();
-    sec.lang=l;sec.classList.toggle('hi',l==='hi');
-    sec.querySelectorAll('[data-t]').forEach(el=>{el.textContent=d[el.dataset.t];});
-    nameEl.placeholder=d.namePh;msgEl.placeholder=d.msgPh;
-    relBox.innerHTML=d.rels.map((r,i)=>`<label class="chip"><input type="radio" name="rel" value="${r}"${i===relIdx?' checked':''}><span>${r}</span></label>`).join('');
-    quickBox.innerHTML=d.quick.map(q=>`<button type="button" class="qchip">${q}</button>`).join('');markQuick();
-    if(!busy)send.textContent=d.send;
-    sec.querySelectorAll('.lang').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
-    if(lastStatus)say(...lastStatus);render();
-    try{localStorage.setItem('aashirwad-lang',l);}catch(e){}
-  }
-  sec.querySelectorAll('.lang').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
-  // Tap a ready-made blessing to fill the box
-  quickBox.addEventListener('click',e=>{const b=e.target.closest('.qchip');if(!b)return;const q=b.textContent.trim();
-    const cur=msgEl.value.trim().replace(/[।.!]+$/,'');msgEl.value=cur&&!cur.includes(q)?cur+t().joiner+q:q;msgEl.dispatchEvent(new Event('input'));markQuick();msgEl.classList.remove('bad');});
-  more.addEventListener('click',()=>{shown+=PAGE;render();});
-  msgEl.addEventListener('input',()=>{$('w-left').textContent=`${msgEl.value.length} / 300`;if(msgEl.value.trim())msgEl.classList.remove('bad');markQuick();});
-  nameEl.addEventListener('input',()=>{if(nameEl.value.trim())nameEl.classList.remove('bad');});
-  try{const n=localStorage.getItem('aashirwad-name');if(n)nameEl.value=n;}catch(e){}
-  // Load the wall when the guest gets near it; refresh every minute while it is on screen
-  function load(){if(DEMO||!AASHIRWAD_URL||document.hidden)return;
-    fetch(AASHIRWAD_URL).then(r=>r.json()).then(d=>{if(d&&d.ok&&Array.isArray(d.wishes)){all=d.wishes;render();}}).catch(()=>{});}
-  let timer=null;
-  new IntersectionObserver(en=>{if(en[0].isIntersecting){load();if(!timer)timer=setInterval(load,60000);}else if(timer){clearInterval(timer);timer=null;}},{rootMargin:'600px 0px'}).observe(form);
-  const post=body=>DEMO?new Promise(r=>setTimeout(()=>r({ok:true}),700))
-    :fetch(AASHIRWAD_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(r=>r.json());
-  form.addEventListener('submit',ev=>{ev.preventDefault();if(busy)return;
-    const name=nameEl.value.trim(),msg=msgEl.value.trim(),relEl=relBox.querySelector('input:checked'),rel=relEl?relEl.value:'';
-    if(!name){nameEl.classList.add('bad');nameEl.focus();say('errName','err');return;}
-    if(!msg){msgEl.classList.add('bad');msgEl.focus();say('errMsg','err');return;}
-    if(!DEMO&&!AASHIRWAD_URL){say('notReady','err');return;}
-    busy=true;send.disabled=true;send.textContent=t().sending;say(null);
-    const mine={name,rel,msg,t:Date.now()};wall.insertAdjacentHTML('afterbegin',card(mine,'new pending'));empty.hidden=true;
-    post({name,rel,msg,website:$('w-site').value}).then(d=>{if(!d||!d.ok)throw new Error('fail');
-        all.unshift(mine);render();if(wall.firstElementChild)wall.firstElementChild.classList.add('new');
-        msgEl.value='';msgEl.dispatchEvent(new Event('input'));try{localStorage.setItem('aashirwad-name',name);}catch(e){}say('ok','ok');})
-      .catch(()=>{const p=wall.querySelector('.pending');if(p)p.remove();empty.hidden=all.length>0;say('fail','err');})
-      .finally(()=>{busy=false;send.disabled=false;send.textContent=t().send;});
-  });
-  setLang(L);
-})();
-
 /* ================= CALENDAR (.ics with every event) ================= */
 $('ics').addEventListener('click',()=>{
   const esc=s=>s.replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\\;');const now=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
@@ -1149,21 +931,6 @@ function tick(){let d=WEDDING_MS-Date.now();if(d<=0){$('cd-wrap').classList.add(
   const D=Math.floor(d/864e5);d-=D*864e5;const H=Math.floor(d/36e5);d-=H*36e5;const M=Math.floor(d/6e4);d-=M*6e4;
   setCd('cd-d',String(D));setCd('cd-h',pad(H));setCd('cd-m',pad(M));setCd('cd-s',pad(Math.floor(d/1e3)));}
 tick();cdTimer=setInterval(tick,1000);
-
-/* ================= ALBUM + LIGHTBOX ================= */
-PHOTOS.forEach((p,i)=>{const b=document.createElement('button');b.type='button';b.className='ph rv';b.setAttribute('aria-label',`Open ${p.alt}`);
-  const img=new Image();img.alt=p.alt;img.loading='lazy';img.decoding='async';img.width=600;img.height=800;img.style.objectPosition=p.pos;
-  img.onload=()=>b.classList.add('loaded');img.onerror=()=>{b.classList.add('missing');p.missing=true;};img.src=p.src;
-  b.appendChild(img);b.addEventListener('click',()=>openLb(i));$('album').appendChild(b);});
-const lb=$('lb'),fig=$('lb-fig');let cur=0,lastFocus=null;
-function showLb(){const p=PHOTOS[cur];fig.innerHTML=p.missing?`<span class="lb-missing" role="img" aria-label="${p.alt}"></span>`:`<img src="${p.src}" alt="${p.alt}">`;$('lb-count').textContent=`${cur+1} / ${PHOTOS.length}`;}
-function openLb(i){cur=i;lastFocus=document.activeElement;showLb();lb.classList.add('on');setInert(true);document.body.style.overflow='hidden';$('lb-close').focus();}
-function closeLb(){lb.classList.remove('on');setInert(false);document.body.style.overflow='';if(lastFocus)lastFocus.focus();}
-const go=d=>{cur=(cur+d+PHOTOS.length)%PHOTOS.length;showLb();};
-$('lb-close').addEventListener('click',closeLb);$('lb-prev').addEventListener('click',()=>go(-1));$('lb-next').addEventListener('click',()=>go(1));
-lb.addEventListener('click',e=>{if(e.target===lb)closeLb();});
-document.addEventListener('keydown',e=>{if(!lb.classList.contains('on'))return;if(e.key==='Tab'){const f=[...lb.querySelectorAll('button')];const i=f.indexOf(document.activeElement);e.preventDefault();f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus();return;}if(e.key==='Escape')closeLb();else if(e.key==='ArrowLeft')go(-1);else if(e.key==='ArrowRight')go(1);});
-let sx0=null;fig.addEventListener('pointerdown',e=>{sx0=e.clientX;});fig.addEventListener('pointerup',e=>{if(sx0===null)return;const dx=e.clientX-sx0;sx0=null;if(Math.abs(dx)>40)go(dx<0?1:-1);});
 
 /* ================= HERO ART: MANDALA + TORAN ================= */
 (function(){const ctx=$('mandala').getContext('2d');ctx.translate(500,500);ctx.lineWidth=1.1;
