@@ -509,6 +509,9 @@ body{background-attachment:scroll}
 @keyframes gBv{0%{transform:translate(220px,92px) scale(.78)}45%{transform:translate(170px,14px) scale(1.05) rotate(10deg)}100%{transform:translate(124px,51px) scale(1.28)}}
 @keyframes gGv{0%{transform:translate(136px,96px) scale(.78)}45%{transform:translate(190px,12px) scale(.95) rotate(-10deg)}100%{transform:translate(239px,66px) scale(.84)}}
 
+/* light performance tweaks (no visual change) */
+.mandala{top:470px}
+
 /* ================= REDUCED MOTION ================= */
 /* "Reduce motion" (often switched on by Android battery saver): keep the envelope and
    function scenes, drop only ambient effects (petals, glitter, glow, parallax, spin, scroll-in). */
@@ -588,8 +591,8 @@ body{background-attachment:scroll}
       <h1 class="names"><span>Himanshu</span><span class="and">and</span><span>Sheetal</span></h1>
       <p class="subtitle">Wedding Invitation</p>
       <svg class="orn" aria-hidden="true"><use href="#ornament"/></svg>
-      <p class="hero-date"><time datetime="2026-12-12T17:00+05:30">12 Dec 2026</time></p>
-      <p class="hero-time">Baarat at 5:00 PM</p>
+      <p class="hero-date"><time datetime="2026-12-13T19:30+05:30">13 Dec 2026</time></p>
+      <p class="hero-time">Reception at 7:30 PM</p>
       <div class="hosts">
         <p class="host-line">With joy in our hearts,<br>we invite you to bless the couple.</p>
         <p class="host-name"><span class="nw">Mr. Mukesh Nath Parihar</span> <span class="nw">&amp; Family</span></p>
@@ -971,7 +974,7 @@ $('ics').addEventListener('click',()=>{
 
 /* ================= COUNTDOWN (fixed IST, right in every country) ================= */
 const pad=n=>String(n).padStart(2,'0');let cdTimer;
-function setCd(id,v){const el=$(id);if(el.textContent!==v){el.textContent=v;if(!reduce)restart(el,'flip');}}
+function setCd(id,v){const el=$(id);if(el.textContent!==v){el.textContent=v;if(!calm&&el.animate)el.animate([{transform:'rotateX(-90deg)',opacity:.2},{transform:'none',opacity:1}],{duration:450,easing:'ease-out'});}}
 function tick(){let d=WEDDING_MS-Date.now();if(d<=0){$('cd-wrap').classList.add('married');clearInterval(cdTimer);return;}
   const D=Math.floor(d/864e5);d-=D*864e5;const H=Math.floor(d/36e5);d-=H*36e5;const M=Math.floor(d/6e4);d-=M*6e4;
   setCd('cd-d',String(D));setCd('cd-h',pad(H));setCd('cd-m',pad(M));setCd('cd-s',pad(Math.floor(d/1e3)));}
@@ -1003,7 +1006,10 @@ function buildFlight(){if(document.body.classList.contains('locked'))return;fw.s
     <path d="${d}" fill="none" stroke="#B8892E" stroke-opacity=".6" stroke-width="2" stroke-dasharray="12 9" clip-path="url(#trav)"/>
     <g id="plane" opacity=".6"><path d="M-50 8q-8-6-16-2" stroke="#B8892E" stroke-width="1.2" fill="none" stroke-dasharray="2 3"/><path d="M-70 4C-75-1-72-6-70-3C-68-6-65-1-70 4z" fill="#D6246E"/>
       <path d="M-30-14L34 0L-30 14L-18 0z" fill="#FFFDF8" stroke="#B8892E" stroke-width="1"/><path d="M-18 0L34 0L-26 10z" fill="#B8892E"/></g>`;
-  clipRect=$('trav-r');plane=$('plane');const path=fsvg.querySelector('path'),L=path.getTotalLength();samples=[];for(let l=0;l<=L;l+=6){const p=path.getPointAtLength(l);samples.push([p.x,p.y]);}updateFlight();}
+  clipRect=$('trav-r');plane=$('plane');
+  samples=[];for(let i=1;i<pts.length;i++){const[x0,y0]=pts[i-1],[x1,y1]=pts[i],h=(y1-y0)/2,n=Math.max(8,Math.ceil((y1-y0)/8));
+    for(let k=(i===1?0:1);k<=n;k++){const t=k/n,u=1-t;samples.push([u*u*u*x0+3*u*u*t*x0+3*u*t*t*x1+t*t*t*x1,u*u*u*y0+3*u*u*t*(y0+h)+3*u*t*t*(y1-h)+t*t*t*y1]);}}
+  updateFlight();}
 function updateFlight(){if(samples.length<3||!plane)return;const H=parseFloat(fw.style.height),target=scrollY+innerHeight*.42;let lo=0,hi=samples.length-1;
   while(lo<hi){const m=(lo+hi)>>1;if(samples[m][1]<target)lo=m+1;else hi=m;}const i=Math.max(1,Math.min(samples.length-2,lo)),p=samples[i],a=samples[i-1],b=samples[i+1];
   plane.setAttribute('transform',`translate(${p[0].toFixed(1)},${p[1].toFixed(1)}) rotate(${(Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI).toFixed(1)})`);
@@ -1018,7 +1024,7 @@ if('ResizeObserver' in window){let lastH=0;new ResizeObserver(()=>{const h=docum
 
 /* ================= SCROLL REVEAL (content stays visible if this fails) ================= */
 if(!calm&&'IntersectionObserver' in window){const rvs=[...document.querySelectorAll('.rv')];let batch=0,bt;
-  rvs.forEach(el=>{if(el.getBoundingClientRect().top>innerHeight*.92)el.classList.add('rv-hide');});
+  const lim=innerHeight*.92,below=rvs.filter(el=>el.getBoundingClientRect().top>lim);below.forEach(el=>el.classList.add('rv-hide'));
   const rio=new IntersectionObserver(en=>en.forEach(x=>{if(!x.isIntersecting)return;const el=x.target;el.style.transitionDelay=(batch++%4)*80+'ms';el.classList.remove('rv-hide');rio.unobserve(el);clearTimeout(bt);bt=setTimeout(()=>batch=0,120);}),{threshold:.1,rootMargin:'0px 0px -5% 0px'});
   rvs.forEach(el=>{if(el.classList.contains('rv-hide'))rio.observe(el);});}
 
